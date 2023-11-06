@@ -41,7 +41,7 @@ function App() {
 
   return (
     <div>
-      <h1>Contries</h1>
+      <h1>Countries</h1>
       <div>
         <Search handleFilter={ handleFilter }/>
         <ul>
