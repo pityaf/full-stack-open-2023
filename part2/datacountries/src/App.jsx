@@ -21,9 +21,6 @@ function App() {
   const handleFilter = (event) => {
     const filters = countries.filter(country => country.name.common.toLowerCase().includes(event.target.value.toLowerCase()))
     setFilterCountries(filters);
-    console.log(event.target.value);
-
-    console.log(filters);
 
     if(filters.length === 1) {
       countryServices
@@ -49,7 +46,7 @@ function App() {
         <Search handleFilter={ handleFilter }/>
         <ul>
           {
-            filterCountries.length < 6 
+            filterCountries.length < 10 
               ? filterCountries.map(country => <Countries key={ country.fifa } country={ country } handleShow={ () => handleShow(country.name.common) }/>)
               : <p>Too many matches, specify another filter</p>
           }
