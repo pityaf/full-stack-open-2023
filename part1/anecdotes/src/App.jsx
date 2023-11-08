@@ -54,9 +54,12 @@ const App = () => {
 
   return (
     <div>
-      <h2>{ anecdotes[selected] }</h2>
-      <Button handleClick={ handleNextClick } text='next anectode' />
-      <Button handleClick={ handleVoteClick } text='vote' />
+      <div>
+        <h2>{ anecdotes[selected] }</h2>
+        <p>has { votes[selected] } votes</p>
+        <Button handleClick={ handleNextClick } text='next anectode' />
+        <Button handleClick={ handleVoteClick } text='vote' />
+      </div>
       <MostVoted anecdote={ anecdotes[mostVotedIndex] } vote={ votes[mostVotedIndex] }/>
     </div>
   )
