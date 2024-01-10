@@ -15,15 +15,16 @@ const App = () => {
       )  
   }, []);
 
-  return (
-    <div>
-      {
-        user === null
-          ? <Login /> 
-          : <Blogs blogs={ blogs } />
-      }
-    </div>
-  )
+  if(user === null) {
+    return <Login /> 
+  } else {
+    return (
+      <>
+        <Credentials />
+        <Blogs blogs={ blogs } />
+      </>
+    )
+  }
 };
 
 export default App;
