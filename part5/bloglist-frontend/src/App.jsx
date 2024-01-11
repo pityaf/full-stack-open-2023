@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
 import Blogs from './components/Blogs';
 import Login from './components/Login';
+import Notification from './components/Notification'
 import blogService from './services/blogs';
 
 const App = () => {
-  const [user, setUser] = useState(null);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');      
+  const [user, setUser] = useState(null);  
   const [blogs, setBlogs] = useState([]);
+
+  const [errorMessage, setErrorMessage] = useState('');
+  const [errorType, setErrorType] = useState(''); //login, logout
 
   useEffect(() => {
       blogService.getAll().then(blogs =>
@@ -15,12 +17,29 @@ const App = () => {
       )  
   }, []);
 
+  const handleLogout = () => {
+    setUser(null);
+
+    setErrorMessage('Logout succesful');
+    setErrorType('addition')
+
+    setTimeout(() => {
+      setErrorMessage(null);
+      setErrorType(null);
+    }, 3000);
+  }
+
+
   if(user === null) {
-    return <Login /> 
+    return <Login setUser={ setUser } setErrorMessage={ setErrorMessage } setErrorType={ setErrorType } errorMessage={ errorMessage } errorType={ errorType } /> 
   } else {
     return (
       <>
-        <Credentials />
+        <Notification message={ errorMessage } type={ errorType } />
+        <div>
+          <p>Hi!, { user.name }</p>
+          <p>not you?<button onClick={ handleLogout }>logout</button></p>
+        </div>
         <Blogs blogs={ blogs } />
       </>
     )
