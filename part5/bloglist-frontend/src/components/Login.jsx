@@ -1,11 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+
 import loginService from '../services/loginService'
 import Notification from './Notification';
 
-const Login = ({ setUser, setErrorMessage, setErrorType, errorMessage, errorType }) => {
+const Login = ({ setUser }) => {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');    
+
+  const [errorMessage, setErrorMessage] = useState('');
+  const [errorType, setErrorType] = useState(''); //login, logout
 
   const styleInput = {
     width: '250px',
@@ -25,6 +29,11 @@ const Login = ({ setUser, setErrorMessage, setErrorType, errorMessage, errorType
       })
 
       setUser(user);
+
+      window.localStorage.setItem(
+        'loggedUser', JSON.stringify(user)
+      )
+
       setUsername('');
       setPassword('');
 
@@ -36,7 +45,7 @@ const Login = ({ setUser, setErrorMessage, setErrorType, errorMessage, errorType
         setErrorType(null);
       }, 3000);
 
-    } catch (e) {
+    } catch(e) {
 
       setErrorMessage('Wrong Credential');
       setErrorType('error')
