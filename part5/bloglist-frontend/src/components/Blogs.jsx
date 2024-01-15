@@ -1,18 +1,23 @@
 import { useState } from 'react';
 
-import blogs from '../services/blogs';
+import blogService from '../services/blogService';
 import loginService from '../services/loginService';
 import Blog from '../components/Blog'
 import Notification from './Notification';
 
 const Blogs = (props) => {
 
-    const [title, setTile] = useState(null);
+    const [title, setTitle] = useState(null);
     const [author, setAuthor] = useState(null);    
     const [url, SetURL] = useState(null);  
 
+    const [loginVisible, setLoginVisible] = useState(false);
+
     const [errorMessage, setErrorMessage] = useState('');
     const [errorType, setErrorType] = useState(''); //login, logout
+
+    const hideWhenVisible = { display: loginVisible ? 'none' : ''};
+    const showWhenVisible = { display: loginVisible ? '' : 'none'};
 
     const styleInput = {
             width: '250px',
@@ -33,13 +38,15 @@ const Blogs = (props) => {
 
         try {
 
-            await blogs.create(newBlog, loginService.getToken())
+            await blogService.create(newBlog, loginService.getToken())
 
-            setTile(null);
+            setTitle(null);
             setAuthor(null);
       
             setErrorMessage(`a new blog ${ title } by ${ author }`);
             setErrorType('addition')
+
+            props.setRefreshBlog(!props.refreshBlog)
       
             setTimeout(() => {
               setErrorMessage(null);
@@ -62,29 +69,36 @@ const Blogs = (props) => {
             <h2>Blogs!</h2>
             <hr />
             <Notification message={ errorMessage } type={ errorType } />
-            <h3>Add a new blog:</h3>
-            <form onSubmit={ handleSubmit }>
-                <div style={ styleInput }>
-                    <label>Title:</label>
-                    <input type="text" className="title" id="title" value={ title } onChange={ ({ target }) => setTile(target.value) } />
+            <div>
+                <div style={ hideWhenVisible }>
+                    <button onClick={() => setLoginVisible(true)}>add blog</button>
                 </div>
+                <div style={ showWhenVisible }>
+                    <h3>Add a new blog:</h3>
+                    <form onSubmit={ handleSubmit }>
+                        <div style={ styleInput }>
+                            <label>Title:</label>
+                            <input type="text" className="title" id="title" value={ title } onChange={ ({ target }) => setTitle(target.value) } />
+                        </div>
 
-                <div style={ styleInput }>
-                    <label>Author:</label>
-                    <input type="text" className="author" id="author" value={ author } onChange={ ({ target }) => setAuthor(target.value) } />
-                </div>
+                        <div style={ styleInput }>
+                            <label>Author:</label>
+                            <input type="text" className="author" id="author" value={ author } onChange={ ({ target }) => setAuthor(target.value) } />
+                        </div>
 
-                <div style={ styleInput }>
-                    <label>URL:</label>
-                    <input type="text" className="url" id="url" value={ url } onChange={ ({ target }) => SetURL(target.value) } />
+                        <div style={ styleInput }>
+                            <label>URL:</label>
+                            <input type="text" className="url" id="url" value={ url } onChange={ ({ target }) => SetURL(target.value) } />
+                        </div>
+                        <button type="submit">Add blog</button>
+                    </form>
+                    <button onClick={() => setLoginVisible(false)}>hide</button>
                 </div>
-                
-                <button type="submit">Add blog</button>
-            </form>
+            </div>
             <hr />
             {
                 props.blogs.map(blog =>
-                    <Blog key={blog.id} blog={blog} />
+                    <Blog key={blog.id} blog={blog} setRefreshBlog={ props.setRefreshBlog } refreshBlog={ props.refreshBlog }/>
                 )
             }
         </div>

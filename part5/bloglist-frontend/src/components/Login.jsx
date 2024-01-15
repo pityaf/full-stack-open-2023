@@ -6,7 +6,7 @@ import Notification from './Notification';
 const Login = ({ setUser }) => {
 
   const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');    
+  const [password, setPassword] = useState('');   
 
   const [errorMessage, setErrorMessage] = useState('');
   const [errorType, setErrorType] = useState(''); //login, logout
@@ -58,7 +58,7 @@ const Login = ({ setUser }) => {
   }
 
   return(
-      <div>
+    <div>
       <h2>Log in to application</h2>
       <Notification message={ errorMessage } type={ errorType } />
       <form onSubmit={ handleSubmit }>

@@ -2,21 +2,31 @@ import { useState, useEffect } from 'react';
 import Blogs from './components/Blogs';
 import Login from './components/Login';
 import Notification from './components/Notification'
-import blogService from './services/blogs';
+import blogService from './services/blogService';
 import loginService from './services/loginService';
 
 const App = () => {
   const [user, setUser] = useState(null);  
   const [blogs, setBlogs] = useState([]);
 
+  const [refreshBlog, setRefreshBlog] = useState(false)
+
   const [errorMessage, setErrorMessage] = useState('');
   const [errorType, setErrorType] = useState(''); //login, logout
 
   useEffect(() => {
-      blogService.getAll().then(blogs =>
-          setBlogs( blogs )
-      )  
-  }, blogs);
+    const fetchData = async () => {
+      try {
+        const response = await blogService.getAll()
+        setBlogs(response.sort((a,b) => {
+          return b.likes - a.likes;
+        }))
+      } catch(e) {
+        console.log(e)
+      }
+    }
+    fetchData();
+  }, [refreshBlog]);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
@@ -43,7 +53,7 @@ const App = () => {
 
 
   if(user === null) {
-    return <Login setUser={ setUser } /> 
+    return <Login setUser={ setUser } />
   } else {
     return (
       <>
@@ -52,7 +62,7 @@ const App = () => {
           <p>Hi!, { user.name }</p>
           <p>not you?<button onClick={ handleLogout }>logout</button></p>
         </div>
-        <Blogs blogs={ blogs } user={ user } />
+        <Blogs blogs={ blogs } user={ user } setRefreshBlog={ setRefreshBlog } refreshBlog={ refreshBlog }/>
       </>
     )
   }
