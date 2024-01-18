@@ -18,7 +18,7 @@ const App = () => {
     const fetchData = async () => {
       try {
         const response = await blogService.getAll()
-        setBlogs(response.sort((a,b) => {
+        setBlogs(response.sort((a, b) => {
           return b.likes - a.likes;
         }))
       } catch(e) {
