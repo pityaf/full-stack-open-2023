@@ -21,8 +21,8 @@ const App = () => {
         setBlogs(response.sort((a, b) => {
           return b.likes - a.likes;
         }))
-      } catch(e) {
-        console.log(e)
+      } catch(error) {
+        console.log(error)
       }
     }
     fetchData();
