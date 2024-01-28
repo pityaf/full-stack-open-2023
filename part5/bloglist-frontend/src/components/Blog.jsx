@@ -40,7 +40,7 @@ const Blog = ({ blog, setRefreshBlog, refreshBlog }) => {
     }
   }
 
-    const addLike = async () => {
+  const addLike = async () => {
     try {
 
       blog.likes = blog.likes + 1;
@@ -53,20 +53,20 @@ const Blog = ({ blog, setRefreshBlog, refreshBlog }) => {
   }
 
   return (
-    <div style={ blogStyle }>
-      <div>
+    <li className='blog' style={ blogStyle }>
+      <div className='basicInfo'>
         <p><strong>Title:</strong> { blog.title }</p>
-        <button onClick={ onClick }>{ info }</button>
+        <p><strong>Author:</strong> { blog.author }</p>
+        <button className='toggableContent' onClick={ onClick }>{ info }</button>
         <hr />
       </div>
-      <div style={ visibleStyle }>
-        <p><strong>Likes:</strong> { blog.likes } <button onClick={ addLike }>add like</button></p>
-        <p><strong>Author:</strong> { blog.author }</p>
+      <div className={ visibleInfo.toString() } style={ visibleStyle }>
+        <p><strong>Likes:</strong> { blog.likes } <button className='addLike' onClick={ addLike }>add like</button></p>
         <p>{ blog.url }</p>
         <hr />
         <button onClick={ deleteBlog }>delete blog</button>
       </div>
-    </div>  
+    </li>  
   )
 }
 

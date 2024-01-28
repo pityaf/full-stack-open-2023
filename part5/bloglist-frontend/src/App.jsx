@@ -7,7 +7,7 @@ import loginService from './services/loginService';
 
 const App = () => {
   const [user, setUser] = useState(null);  
-  const [blogs, setBlogs] = useState([]);
+  const [blogs, setBlogs] = useState([]);  
 
   const [refreshBlog, setRefreshBlog] = useState(false)
 
@@ -38,6 +38,7 @@ const App = () => {
   }, [])
 
   const handleLogout = () => {
+    setLoggedIn(0)
     setUser(null);
 
     setErrorMessage('Logout succesful');

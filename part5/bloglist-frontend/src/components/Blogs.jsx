@@ -3,13 +3,14 @@ import { useState } from 'react';
 import blogService from '../services/blogService';
 import loginService from '../services/loginService';
 import Blog from '../components/Blog'
+import BlogForm from './BlogForm';
 import Notification from './Notification';
 
 const Blogs = (props) => {
 
-    const [title, setTitle] = useState(null);
-    const [author, setAuthor] = useState(null);    
-    const [url, SetURL] = useState(null);  
+    const [title, setTitle] = useState('');
+    const [author, setAuthor] = useState('');    
+    const [url, setURL] = useState('');  
 
     const [loginVisible, setLoginVisible] = useState(false);
 
@@ -18,14 +19,6 @@ const Blogs = (props) => {
 
     const hideWhenVisible = { display: loginVisible ? 'none' : ''};
     const showWhenVisible = { display: loginVisible ? '' : 'none'};
-
-    const styleInput = {
-            width: '250px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginBottom: '5px'
-        }
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -40,8 +33,8 @@ const Blogs = (props) => {
 
             await blogService.create(newBlog, loginService.getToken())
 
-            setTitle(null);
-            setAuthor(null);
+            setTitle('');
+            setAuthor('');
       
             setErrorMessage(`a new blog ${ title } by ${ author }`);
             setErrorType('addition')
@@ -73,34 +66,20 @@ const Blogs = (props) => {
                 <div style={ hideWhenVisible }>
                     <button onClick={() => setLoginVisible(true)}>add blog</button>
                 </div>
-                <div style={ showWhenVisible }>
+                <div className='blog-form' style={ showWhenVisible }>
                     <h3>Add a new blog:</h3>
-                    <form onSubmit={ handleSubmit }>
-                        <div style={ styleInput }>
-                            <label>Title:</label>
-                            <input type="text" className="title" id="title" value={ title } onChange={ ({ target }) => setTitle(target.value) } />
-                        </div>
-
-                        <div style={ styleInput }>
-                            <label>Author:</label>
-                            <input type="text" className="author" id="author" value={ author } onChange={ ({ target }) => setAuthor(target.value) } />
-                        </div>
-
-                        <div style={ styleInput }>
-                            <label>URL:</label>
-                            <input type="text" className="url" id="url" value={ url } onChange={ ({ target }) => SetURL(target.value) } />
-                        </div>
-                        <button type="submit">Add blog</button>
-                    </form>
+                    <BlogForm  handleSubmit={ handleSubmit } title={ title } setTitle={ setTitle } author={ author } setAuthor={ setAuthor } url={ url } setURL={ setURL } />
                     <button onClick={() => setLoginVisible(false)}>hide</button>
                 </div>
             </div>
             <hr />
-            {
+            <ul style={ { padding: 0 } }>
+            {   
                 props.blogs.map(blog =>
                     <Blog key={blog.id} blog={blog} setRefreshBlog={ props.setRefreshBlog } refreshBlog={ props.refreshBlog }/>
                 )
             }
+            </ul>
         </div>
     )
 }

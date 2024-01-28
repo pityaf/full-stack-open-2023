@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import PropTypes  from 'prop-types';
+
 import loginService from '../services/loginService'
 import Notification from './Notification';
 
@@ -77,5 +79,9 @@ const Login = ({ setUser }) => {
     </div>
   )
 };
+
+Login.propTypes = {
+  setUser: PropTypes.func.isRequired,
+}
 
 export default Login;
