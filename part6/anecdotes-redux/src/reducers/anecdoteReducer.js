@@ -24,10 +24,16 @@ export const addVote = (id) => {
   }
 }
 
-export const newAnecdote = (anecdote) =>{
+export const newAnecdote = (anecdote) => {
   return {
     type: 'ADD_ANECDOTE',
     payload: anecdote
+  }
+}
+
+export const orderAnecdotes = () => {
+  return {
+    type: 'ORDER_ANECDOTE'
   }
 }
 
@@ -39,6 +45,8 @@ export const reducer = (state = initialState, action) => {
   console.log('action', action)
 
   switch(action.type) {
+    case 'ORDER_ANECDOTE':
+      return state.sort((a, b) => b.votes - a.votes)
     case 'ADD_ANECDOTE':
       return state.concat(asObject(action.payload))
     case 'VOTE': {
