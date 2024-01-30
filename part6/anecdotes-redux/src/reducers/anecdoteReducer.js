@@ -37,25 +37,22 @@ export const orderAnecdotes = () => {
   }
 }
 
-
 const initialState = anecdotesAtStart.map(asObject)
 
-export const reducer = (state = initialState, action) => {
+export const anecdoteReducer = (state = initialState, action) => {
   console.log('state now: ', state)
   console.log('action', action)
 
   switch(action.type) {
-    case 'ORDER_ANECDOTE':
-      return state.sort((a, b) => b.votes - a.votes)
     case 'ADD_ANECDOTE':
       return state.concat(asObject(action.payload))
     case 'VOTE': {
-      const updateAnectodes = state.find(anecdote => anecdote.id === action.payload.id)
+      const updateAnectodes = state.find(anecdote => anecdote.id === action.payload)
       const changeAnectoders = {
         ...updateAnectodes,
         votes: updateAnectodes.votes + 1
       }
-      return state.map(anecdote => anecdote.id !== action.payload.id ? anecdote : changeAnectoders)
+      return state.map(anecdote => anecdote.id !== action.payload ? anecdote : changeAnectoders)
     }
     default:
        return state
