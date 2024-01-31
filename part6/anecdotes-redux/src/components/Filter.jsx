@@ -13,7 +13,7 @@ const Filter = () => {
     }
   
     return (
-      <div style={style}>
+      <div style={ style }>
         filter <input onChange={ handleChange } placeholder="filter anecdote" />
       </div>
     )
