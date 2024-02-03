@@ -25,11 +25,10 @@ const anecdoteSlice = createSlice({
     name: 'anecdotes',
     initialState: initialState,
     reducers: {
-        newAnecdote(state, action) {
+        newAnecdote: (state, action) => {
           state.push(asObject(action.payload))
         },
-        addVote(state, action) {
-          state.push(asObject(action.payload))
+        addVote: (state, action) => {
           const updateAnectodes = state.find(anecdote => anecdote.id === action.payload)
           const changeAnectoders = {
             ...updateAnectodes,
