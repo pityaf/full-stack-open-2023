@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit"
 
-export const setNotification = (text) => {
+export const setNotification = (text, couter = 1) => {
     return dispatch => {
         dispatch(showNotification(text))
         setTimeout(() => {
             dispatch(hideNotification())
-        }, 5000)
+        }, couter * 5000)
     }
 }
 
